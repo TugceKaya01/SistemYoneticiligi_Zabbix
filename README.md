@@ -1,0 +1,1 @@
+# SistemYoneticiligi_Zabbix
