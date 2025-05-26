@@ -54,7 +54,6 @@ Bir web tarayıcısı açın ve Zabbix sunucunuzun IP adresini veya alan adını
 
 
 # Webhook Script Kodu
-
 try {
     var params = JSON.parse(value);
 
@@ -116,17 +115,8 @@ try {
 
     // Başarıyla gönderildi
     return JSON.stringify(response_json);
-vcatch (error) {
-    Zabbix.Log(3, '[Telegram Webhook] Hata: ' + error);
-    // Zabbix, başarısız medya türü yürütmesi için bir hata fırlatılmasını bekler
-    if (typeof error === 'object' && error !== null) {
-        // Hata nesnesiyse, mesajını veya kendisini string'e çevir
-        throw JSON.stringify({ error: String(error.message || error) });
-    }
-    throw String(error); // Hata zaten bir string ise doğrudan fırlat
 
 } 
-
 catch (error) {
     Zabbix.Log(3, '[Telegram Webhook] Hata: ' + error);
     // Zabbix, başarısız medya türü yürütmesi için bir hata fırlatılmasını bekler
@@ -137,4 +127,5 @@ catch (error) {
     throw String(error); // Hata zaten bir string ise doğrudan fırlat
 }
 
+        
 
