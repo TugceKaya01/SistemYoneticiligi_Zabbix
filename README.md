@@ -120,6 +120,7 @@ try {
     return JSON.stringify(response_json);}
     
 catch (error) {
+
     Zabbix.Log(3, '[Telegram Webhook] Hata: ' + error);
     
     // Zabbix, başarısız medya türü yürütmesi için bir hata fırlatılmasını bekler
@@ -127,7 +128,6 @@ catch (error) {
         // Hata nesnesiyse, mesajını veya kendisini string'e çevir
         throw JSON.stringify({ error: String(error.message || error) });
     }
-    throw String(error); // Hata zaten bir string ise doğrudan fırlat
-}
+    throw String(error); // Hata zaten bir string ise doğrudan fırlat}
         
 
