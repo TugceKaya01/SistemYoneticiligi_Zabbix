@@ -68,12 +68,10 @@ try {
     if (!params.Message) {
         throw 'Parametre "Message" tanımlanmamış.';
     }
-    // Subject (Konu) genellikle sağlanır ama mesajın bir parçası olarak kullanılır.
-    // ParseMode isteğe bağlıdır; Telegram belirtilmemişse veya geçersizse varsayılanı kullanır.
 
     var request = new HttpRequest();
 
-    // İsteğe bağlı: Proxy desteği (Eğer Zabbix arayüzünde HTTPProxy parametresi eklerseniz)
+    // Proxy desteği (isteğe bağlı)
     if (typeof params.HTTPProxy === 'string' && params.HTTPProxy.trim() !== '') {
         request.setProxy(params.HTTPProxy);
         Zabbix.Log(4, '[Telegram Webhook] Proxy kullanılıyor: ' + params.HTTPProxy);
@@ -82,7 +80,8 @@ try {
     request.addHeader('Content-Type: application/json');
 
     var message_text = params.Message;
-    // Eğer Subject (Konu) parametresi doluysa, mesajın başına ekle
+
+    // Subject varsa mesaja ekle
     if (typeof params.Subject === 'string' && params.Subject.trim() !== '') {
         message_text = params.Subject + '\n' + params.Message;
     }
@@ -92,7 +91,7 @@ try {
         text: message_text
     };
 
-    // ParseMode parametresini ayarla (Markdown, HTML, MarkdownV2)
+    // ParseMode kontrolü
     if (typeof params.ParseMode === 'string' && ['Markdown', 'HTML', 'MarkdownV2'].indexOf(params.ParseMode) !== -1) {
         body.parse_mode = params.ParseMode;
     }
@@ -114,16 +113,16 @@ try {
         throw 'Telegram API bir hata döndürdü: ' + response_json.description + ' (hata kodu: ' + response_json.error_code + ')';
     }
 
-    // Başarıyla gönderildi
+    // Başarılı yanıt
     return JSON.stringify(response_json);
 
 } catch (error) {
     Zabbix.Log(3, '[Telegram Webhook] Hata: ' + error);
-    // Zabbix, başarısız medya türü yürütmesi için bir hata fırlatılmasını bekler
+    
     if (typeof error === 'object' && error !== null) {
-        // Hata nesnesiyse, mesajını veya kendisini string'e çevir
         throw JSON.stringify({ error: String(error.message || error) });
     }
-    throw String(error); // Hata zaten bir string ise doğrudan fırlat
+    
+    throw String(error);
 }
 
