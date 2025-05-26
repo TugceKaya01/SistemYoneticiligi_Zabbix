@@ -119,7 +119,9 @@ try {
     // Başarıyla gönderildi
     return JSON.stringify(response_json);}
     
-catch (error) {Zabbix.Log(3, '[Telegram Webhook] Hata: ' + error);
+catch (error) {
+
+    Zabbix.Log(3, '[Telegram Webhook] Hata: ' + error);
     
     // Zabbix, başarısız medya türü yürütmesi için bir hata fırlatılmasını bekler
     if (typeof error === 'object' && error !== null) {
@@ -127,5 +129,4 @@ catch (error) {Zabbix.Log(3, '[Telegram Webhook] Hata: ' + error);
         throw JSON.stringify({ error: String(error.message || error) });
     }
     throw String(error); // Hata zaten bir string ise doğrudan fırlat}
-        
 
